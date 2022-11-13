@@ -4,6 +4,9 @@
     Author     : acer
 --%>
 
+<%@page import="model.Student"%>
+<%@page import="model.StudentTable"%>
+<%@page import="java.util.List"%>
 <%@page import="java.sql.DriverManager"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
@@ -16,29 +19,25 @@
         <title>Table Page</title>
     </head>
     <body>
-        <table border="1">
-            <th> ID </th>
-            <th> Name </th>
-            <th> GPA </th>
-        <%
-            try{
-                Class.forName("org.apache.derby.jdbc.ClientDriver");
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/student","app","app");
-                Statement st = con.createStatement();
-                String str = "select * from student";
-                ResultSet rs = st.executeQuery(str);
-                %>
-                <tr>
-                <td> <%=rs.getInt("id") %></td>
-                <td> <%=rs.getString("name") %></td>
-                <td> <%=rs.getDouble("gpa") %></td>
-                </tr>
-                <%
-            } catch (Exception e){
-                
-            }
-        %>
+        <table border="2" style="margin-left: auto; margin-right: auto;">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>GPA</th>
+            </tr>
+            <%
+                List<Student> stdList = StudentTable.findAllStudent();
+                for(Student std : stdList){
+            %>
+            <tr>
+                <td><%=std.getId()%></td>
+                <td><%=std.getName() %></td>
+                <td><%=std.getGpa() %></td>
+            </tr>
+            <% } %>
         </table>
-        <a href="index.jsp"> back to the addStudent</a>
+        <center>
+            <a href="index.jsp"> back to the addStudent</a>
+        </center>
     </body>
 </html>
